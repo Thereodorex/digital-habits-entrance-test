@@ -27,10 +27,12 @@ const Header = styled.header`
 `
 
 const Main = styled.main`
+  padding-top: 10px;
   width: 400px;
   display: flex;
   justify-content: start;
   background-color: white;
+  overflow: auto;
 `
 
 const App = () => {
@@ -38,7 +40,7 @@ const App = () => {
     <Wrapper>
       <Header>Digital Habits. Entrance test</Header>
       <Main>
-        <List id={0} level={0} />
+        <List id={0} />
       </Main>
     </Wrapper>
   );
