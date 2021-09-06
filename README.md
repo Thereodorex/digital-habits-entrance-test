@@ -9,6 +9,8 @@
 
 ### `npm start`
 
+Проект будет доступен на localhost:8080
+
 ## Сборка production
 
 ### `npm run build`

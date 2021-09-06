@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+
+import { fetchContentById, selectContentById, removeFile } from '../store/contentSlice';
 
 import Row from './Row';
 
@@ -11,21 +14,15 @@ const Wrapper = styled.div`
 `
 
 const List = ({ id }) => {
-  const [list, setList] = useState([]);
+  const dispatch = useDispatch();
+  const filesList = useSelector(selectContentById(id));
 
   useEffect(() => {
-    (async () => {
-      const requestUrl = new URL(process.env.REACT_APP_API_URL);
-      const requestParams = {};
-      if (id) requestParams.dirId = id;
-      requestUrl.search = new URLSearchParams(requestParams);
-      const resp = await fetch(requestUrl);
-      const data = await resp.json();
-      setList(data.children);
-    })();
-  }, [ id ]);
+    dispatch(fetchContentById(id));
+    return (() => dispatch(removeFile(id)));
+  }, [ dispatch, id ]);
 
-  const content = list.map(file => <Row key={file.id} {...file} />)
+  const content = filesList.map(file => <Row key={file.id} {...file} />)
 
   return (
     <Wrapper>
