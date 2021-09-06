@@ -23,6 +23,7 @@ const postsSlice = createSlice({
   initialState: {},
   reducers: {
     removeFile(state, action) {
+      delete state[action.payload.id];
     },
   },
   extraReducers: (builder) => {
