@@ -22,13 +22,34 @@ const contentSlice = createSlice({
   initialState: {},
   reducers: {
     removeFile(state, action) {
-      delete state[action.payload.id];
+      const removeChilds = id => {
+        state[id]?.children?.forEach(removeChilds)
+        delete state[id];
+      }
+      if (state[action.payload]?.children) {
+        state[action.payload].children.forEach(removeChilds);
+        state[action.payload].children = [];
+        state[action.payload].status = 'folder';
+      }
     },
   },
-  extraReducers: (builder) => {
-    builder.addCase(fetchContentById.fulfilled, (state, { payload }) => {
-      state[payload.id] = payload.children;
-    })
+  extraReducers: {
+    [fetchContentById.pending]: (state, { meta }) => {
+      if (meta.arg === 0) state[meta.arg] = {};
+      state[meta.arg].status = 'loading';
+    },
+    [fetchContentById.rejected]: (state, { meta }) => {
+      state[meta.arg].status = 'notLoaded';
+    },
+    [fetchContentById.fulfilled]: (state, { payload }) => {
+      payload.children = payload.children.map(item => {
+        item.status = item.children ? 'folder' : 'file';
+        state[item.id] = item;
+        return item.id;
+      });
+      payload.status = 'opened';
+      state[payload.id] = payload;
+    },
   },
 })
 
@@ -37,6 +58,6 @@ const { actions, reducer } = contentSlice;
 export const { removeFile } = actions;
 
 const selectSelf = (state) => state.content;
-export const selectContentById = id => createSelector(selectSelf, (state) => state[id] ?? []);
+export const selectContentById = id => createSelector(selectSelf, (state) => state[id]);
 
 export default reducer;

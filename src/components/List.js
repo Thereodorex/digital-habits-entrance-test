@@ -6,27 +6,36 @@ import { fetchContentById, selectContentById, removeFile } from '../store/conten
 
 import Row from './Row';
 
-const Wrapper = styled.div`
+const Wrapper = styled.ul`
   padding-left: 25px;
   display: flex;
   flex-flow: column nowrap;
   align-items: flex-start;
 `
 
+
 const List = ({ id }) => {
   const dispatch = useDispatch();
-  const filesList = useSelector(selectContentById(id));
+  const fileItem = useSelector(selectContentById(id));
 
   useEffect(() => {
-    dispatch(fetchContentById(id));
-    return (() => dispatch(removeFile(id)));
+    const thunkPromise = dispatch(fetchContentById(id));
+    return (() => {
+      thunkPromise.abort();
+      dispatch(removeFile(id))
+    });
   }, [ dispatch, id ]);
 
-  const content = filesList.map(file => <Row key={file.id} {...file} />)
+  const filesElements = fileItem?.children?.map(file => {
+    return <Row
+      key={file}
+      id={file}
+    />
+  });;
 
   return (
     <Wrapper>
-      {content}
+      {filesElements}
     </Wrapper>
   );
 }

@@ -27,7 +27,7 @@ const Header = styled.header`
 `
 
 const Main = styled.main`
-  padding-top: 10px;
+  padding: 10px 0;
   width: 400px;
   display: flex;
   justify-content: start;
