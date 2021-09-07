@@ -7,7 +7,7 @@ module.exports = {
         main: path.resolve(__dirname, 'src/index.js'),
     },
     output: {
-        path: path.resolve(__dirname, 'webpack_build/'),
+        path: path.resolve(__dirname, 'docs/'),
         filename: 'bundle.js',
     },
     devServer:{
@@ -52,7 +52,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             title: 'webpack Boilerplate',
             template: path.resolve(__dirname, 'public/index.html'), // шаблон
-            path: path.resolve(__dirname, 'webpack_build'),
+            path: path.resolve(__dirname, 'docs'),
             filename: 'index.html', // название выходного файла
         }),
     ],

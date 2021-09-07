@@ -2,7 +2,6 @@ import {
   createSlice,
   createAsyncThunk,
   createSelector,
-  current,
 } from '@reduxjs/toolkit';
 
 export const fetchContentById = createAsyncThunk(
@@ -18,13 +17,12 @@ export const fetchContentById = createAsyncThunk(
   }
 )
 
-const postsSlice = createSlice({
+const contentSlice = createSlice({
   name: 'content',
   initialState: {},
   reducers: {
     removeFile(state, action) {
       delete state[action.payload.id];
-      console.log(current(state));
     },
   },
   extraReducers: (builder) => {
@@ -34,7 +32,7 @@ const postsSlice = createSlice({
   },
 })
 
-const { actions, reducer } = postsSlice;
+const { actions, reducer } = contentSlice;
 
 export const { removeFile } = actions;
 
